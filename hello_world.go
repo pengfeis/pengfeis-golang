@@ -2,18 +2,26 @@ package main
 
 import (
 	"fmt"
-	"math"
+	"strconv"
+	"strings"
 )
 
-type Vertex struct {
-	X, Y float64
-}
+type IPAddr [4]byte
 
-func (v Vertex) Abs() float64 {
-	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+func (ipAddr IPAddr) String() string {
+	var s []string
+	for _, i := range ipAddr {
+		s = append(s, strconv.Itoa(int(i)))
+	}
+	return fmt.Sprintf(strings.Join(s, "."))
 }
 
 func main() {
-	v := Vertex{3, 4}
-	fmt.Println(v.Abs())
+	hosts := map[string]IPAddr{
+		"loopback":  {127, 0, 0, 1},
+		"googleDNS": {8, 8, 8, 8},
+	}
+	for name, ip := range hosts {
+		fmt.Printf("%v: %v\n", name, ip)
+	}
 }
